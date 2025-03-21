@@ -1,0 +1,66 @@
+### 1. 対象VMの現在のプランを確認
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 2. Defender for Serverのプラン確認
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 3. 対象のVMのプランをP1に変更
+PUT https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "pricingTier": "Standard",
+    "subPlan": "P1"
+  }
+}
+
+### 4. 対象のVMのプランをFreeに変更
+PUT https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+{
+  "properties": {
+    "pricingTier": "Free"
+  }
+}
+
+
+### 5. 対象のVMをSubscriptionからの継承に戻す
+DELETE https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+
+### 6. 対象の仮想マシンの拡張機能を取得
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/extensions?api-version=2021-07-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 7. MDE.Windowsの拡張機能を追加
+PUT https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/extensions/MDE.Windows?api-version=2021-07-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+{
+  "location": "{{$dotenv LOCATION}}",
+  "properties": {
+    "publisher": "Microsoft.Azure.AzureDefenderForServers",
+    "type": "MDE.Windows",
+    "typeHandlerVersion": "1.0",
+    "autoUpgradeMinorVersion": true,
+    "settings": {}
+  }
+}
+
+### 8. MDE.Windowsの拡張機能を削除
+DELETE https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/extensions/MDE.Windows?api-version=2021-07-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
