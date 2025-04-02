@@ -4,8 +4,6 @@ How to separate plans by resource in Defender for Servers?
 ## 概要
 Microsoft Defender for Cloud で、リソース単位でプランを設定する検証を行う。
 
-※現在、Arc未対応
-
 リソース単位でプランを設定することで、特定のリソースに対してのみ Defender for Cloud の機能を有効化することができる。
 これにより、コストを抑えつつ、必要なセキュリティ機能を適用することが可能になる。
 
@@ -45,7 +43,7 @@ Connect-AzAccount -Tenant <tenant_id>
   - AZURE_RESOURCE_GROUP_NAME に、リソースグループ名を設定してください
   - AZURE_VM_NAME に、VM 名を設定してください
 - VSCode に REST Client 拡張機能をインストールしてください
-- defender-for-server-api.http を開いて、「Send Request」をクリックして実行します
+- DefenderPricingAPI.http を開いて、「Send Request」をクリックして実行します
 
 ## PowerShell での検証
 
@@ -54,7 +52,7 @@ VM毎に Defender for Cloud のプランを設定するための PowerShell ス�
 このスクリプトを使用することで、特定の VM に対して Defender for Cloud のプランを設定することができます。
 
 ```powershell
-./defender-pricing.ps1
+./DefenderResourceLevelPricing.ps1
 ```
 
 ```
