@@ -108,3 +108,7 @@ DELETE https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/re
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
 
+### Get Subscription List
+GET https://management.azure.com/subscriptions?api-version=2022-12-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
