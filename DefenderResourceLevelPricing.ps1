@@ -86,21 +86,17 @@ function Get-MDEExtensions {
         [array]$extentions
     )
 
-    # 結果を格納する配列
     $mdeExtensions = ""
 
-    # 配列をループ処理
     foreach ($extention in $extentions) {
-        # ID を取得して最後の部分を抽出
+        # Choose the last segment of the extension ID
         $lastSegment = ($extention.id -split "/")[-1]
 
-        # 条件に一致する場合、結果に追加
+        # if the last segment is "MDE.Windows" or "MDE.Linux", set it to $mdeExtensions
         if ($lastSegment -eq "MDE.Windows" -or $lastSegment -eq "MDE.Linux") {
             $mdeExtensions = $lastSegment
         }
     }
-
-    # 結果を返す
     return $mdeExtensions
 }
 
