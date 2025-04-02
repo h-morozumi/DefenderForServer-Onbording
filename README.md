@@ -93,8 +93,3 @@ Set-AzVMExtension -ResourceGroupName "YourResourceGroupName" -VMName "YourVMName
 Remove-AzVMExtension -ResourceGroupName "YourResourceGroupName" -VMName "YourVMName" -Name "MDE.Windows"
 ```
 
-ARCはURIが違う（未検証）
-
-```url
-https://management.azure.com/subscriptions/$($azContext.Subscription.Id)/resourceGroups/$($line.TargetResourceGroup)/providers/Microsoft.HybridCompute/machines/$($line.TargetVM)/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01
-```

@@ -1,14 +1,59 @@
-### 1. 対象VMの現在のプランを確認
-GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+### Get all virtual machines, VMSSs, and ARC machines
+### 1. Get Virtual Machines
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/providers/Microsoft.Compute/virtualMachines?api-version=2023-03-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
 
-### 2. Defender for Serverのプラン確認
+### 2. Get ARC Machines
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/providers/Microsoft.HybridCompute/machines?api-version=2024-07-10
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 3. Get VM Scale Sets
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/providers/Microsoft.Compute/virtualMachineScaleSets?api-version=2023-03-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+
+### Get all virtual machines, VMSSs, and ARC machines in the resource group
+### 1. Get Virtual Machines in the resource group
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines?api-version=2021-04-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 2. Get ARC Machines in the resource group
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.HybridCompute/machines?api-version=2022-12-27
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 3. Get VM Scale Sets in the resource group
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachineScaleSets?api-version=2021-04-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+
+### Get Defender for Cloud pricing plan
 GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
 
-### 3. 対象のVMのプランをP1に変更
+### 1. Get Defender for Cloud pricing plan on virtual machine
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 2. Get Defender for Cloud pricing plan on VMSS
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachineScaleSets/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### 3. Get Defender for Cloud pricing plan on ARC machine
+GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.HybridCompute/machines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
+Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
+Content-Type: application/json
+
+### Change Defender for Cloud pricing plan
+### 1. Change the pricing plan of the VM to P1
 PUT https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
@@ -20,7 +65,7 @@ Content-Type: application/json
   }
 }
 
-### 4. 対象のVMのプランをFreeに変更
+### 2. Change the pricing plan of the VM to Free
 PUT https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
@@ -31,19 +76,18 @@ Content-Type: application/json
   }
 }
 
-
-### 5. 対象のVMをSubscriptionからの継承に戻す
+### 3. Change the pricing plan of the VM to existing plan
 DELETE https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
 
-
-### 6. 対象の仮想マシンの拡張機能を取得
+### Virtual Machine extension MDE.Windows
+### 1. Get all virtual machine extensions
 GET https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/extensions?api-version=2021-07-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
 
-### 7. MDE.Windowsの拡張機能を追加
+### 2. Install MDE.Windows extension
 PUT https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/extensions/MDE.Windows?api-version=2021-07-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
@@ -59,7 +103,7 @@ Content-Type: application/json
   }
 }
 
-### 8. MDE.Windowsの拡張機能を削除
+### 3. Delete MDE.Windows extension
 DELETE https://management.azure.com/subscriptions/{{$dotenv SUBSCRIPTION_ID}}/resourceGroups/{{$dotenv RESOURCE_GROUP_NAME}}/providers/Microsoft.Compute/virtualMachines/{{$dotenv VM_NAME}}/extensions/MDE.Windows?api-version=2021-07-01
 Authorization: Bearer {{$dotenv AZURE_ACCESS_TOKEN}}
 Content-Type: application/json
